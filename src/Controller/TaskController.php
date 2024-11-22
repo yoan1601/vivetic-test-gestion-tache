@@ -53,4 +53,37 @@ class TaskController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+/**
+ * @Route("/tasks/{id}/edit", name="task_edit")
+ */
+public function edit(Request $request, Task $task)
+{
+    $form = $this->createForm(TaskType::class, $task);
+    $form->handleRequest($request);
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        $this->getDoctrine()->getManager()->flush();
+        $this->addFlash('success', 'Task updated successfully!');
+        return $this->redirectToRoute('task_index');
+    }
+
+    return $this->render('task/edit.html.twig', [
+        'form' => $form->createView(),
+    ]);
+}
+
+/**
+ * @Route("/tasks/{id}/delete", name="task_delete")
+ */
+public function delete(Task $task)
+{
+    $entityManager = $this->getDoctrine()->getManager();
+    $entityManager->remove($task);
+    $entityManager->flush();
+
+    $this->addFlash('success', 'Task deleted successfully!');
+    return $this->redirectToRoute('task_index');
+}
+
 }
