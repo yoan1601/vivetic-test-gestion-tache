@@ -78,3 +78,44 @@ class TaskRepository extends ServiceEntityRepository
             ->getResult();
     }
 }
+
+// src/Repository/TaskRepository.php
+namespace App\Repository;
+
+use App\Entity\Task;
+use App\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+class TaskRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Task::class);
+    }
+
+    // Récupérer les tâches par statut et utilisateur
+    public function findByStatusAndUser(string $status, User $user)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.status = :status')
+            ->andWhere('t.assignedTo = :user')
+            ->setParameter('status', $status)
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
+    }
+
+    // Récupérer les tâches en retard pour un utilisateur
+    public function findOverdueTasksForUser(User $user)
+    {
+        return $this->createQueryBuilder('t')
+            ->andWhere('t.assignedTo = :user')
+            ->andWhere('t.endDate < :now')
+            ->setParameter('user', $user)
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getResult();
+    }
+}
+
