@@ -1,47 +1,118 @@
-# vivetic-test-gestion-tache
-Projet : Application de gestion de tâches d’équipe - Objectif : Développer une application simple de gestion de tâches permettant aux  membres d'une équipe de collaborer, de suivre les progrès des tâches, et d'obtenir  une vue d’ensemble des projets en cours.
+# Application de Gestion de Tâches d'Équipe
 
-Fonctionnalités demandées :
-5 Authentification et rôles :
-6 Utilisez Symfony Security pour créer deux types d’utilisateurs : admin et 
-membre.
-7 Les admins peuvent gérer toutes les tâches, tandis que les membres peuvent 
-uniquement voir et mettre à jour les tâches qui leur sont assignées.
-8 
-9 CRUD Tâches :
-10 Implémentez un CRUD pour les tâches avec les champs suivants : titre, 
-description, statut (en attente, en cours, terminé), priorité, date de début, 
-date de fin, et utilisateur assigné.
-11 Les admins peuvent créer, assigner, et supprimer des tâches. Les membres 
-peuvent uniquement modifier le statut et les commentaires de leurs tâches 
-assignées.
-12 
-13 Tableau de bord :
-14 Créez une page d'accueil avec des indicateurs de performance tels que :
-15 Nombre total de tâches par statut
-16 Liste des tâches en retard (date de fin dépassée et statut non terminé)
-17 Statistiques par utilisateur (tâches en cours, terminées, en retard)
-18 
-19 API REST (Bonus) :
-20 Créez une petite API REST permettant de lister les tâches avec pagination et 
-filtres par statut et utilisateur.
-21 
-22 Tests (optionnel) :
-23 Écrivez quelques tests unitaires ou fonctionnels pour vérifier les 
-fonctionnalités principales de l’application.
-24 
-25 Contraintes techniques :
-26 Symfony 6+
-27 Base de données : MySQL ou PostgreSQL.
-28 Meilleures pratiques : Utilisez les concepts de services, repositories, et 
-une organisation de code claire (suivant PSR-12).
-29 Documentation : Rédigez un fichier README avec les instructions 
-d’installation et d’utilisation de l’application.
-30 
-31 Livrables :
-32 Code source : Déposez le projet dans un dépôt Git.
-33 Documentation : Fichier README contenant les instructions pour installer 
-34 et exécuter l’application avec le login et mot de passe (admin et 
-membre)
-35 Explications : Une courte note expliquant les choix techniques réalisés et 
-comment la solution pourrait être améliorée.
+Une application web développée avec Symfony 6+ permettant aux équipes de gérer et suivre leurs tâches et projets de manière collaborative.
+
+## Fonctionnalités
+
+- 👥 **Système d'authentification** avec deux types d'utilisateurs (admin et membre)
+- ✅ **Gestion complète des tâches** (CRUD)
+- 📊 **Tableau de bord** avec statistiques et indicateurs de performance
+- 🔄 **API REST** pour l'intégration avec d'autres services
+- ✨ **Interface intuitive** et responsive
+
+## Prérequis
+
+- PHP 8.1 ou supérieur
+- Composer
+- MySQL 5.7 ou supérieur (ou PostgreSQL 13+)
+- Symfony CLI (recommandé pour le développement)
+- Node.js et npm (pour la compilation des assets)
+
+## Installation
+
+1. **Cloner le repository**
+```bash
+git clone https://github.com/votre-username/task-manager.git
+cd task-manager
+```
+
+2. **Installer les dépendances**
+```bash
+composer install
+npm install
+```
+
+3. **Configurer l'environnement**
+   - Copier le fichier `.env` en `.env.local`
+   - Modifier les paramètres de connexion à la base de données :
+```
+DATABASE_URL="mysql://user:password@127.0.0.1:3306/task_manager?serverVersion=8.0"
+```
+
+4. **Créer la base de données**
+```bash
+php bin/console doctrine:database:create
+php bin/console doctrine:migrations:migrate
+```
+
+5. **Charger les données initiales**
+```bash
+php bin/console doctrine:fixtures:load
+```
+
+6. **Compiler les assets**
+```bash
+npm run build
+```
+
+7. **Démarrer le serveur de développement**
+```bash
+symfony server:start
+# ou
+php -S localhost:8000 -t public/
+```
+
+## Comptes de test
+
+### Admin
+- Email: admin@example.com
+- Mot de passe: admin123
+
+### Membre
+- Email: user@example.com
+- Mot de passe: user123
+
+## Structure du projet
+
+```
+task-manager/
+├── assets/              # Fichiers front-end (JS, CSS)
+├── config/             # Configuration de l'application
+├── migrations/         # Migrations de base de données
+├── public/            # Fichiers publics
+├── src/               # Code source PHP
+│   ├── Controller/   # Contrôleurs
+│   ├── Entity/       # Entités Doctrine
+│   ├── Repository/   # Repositories
+│   └── Service/      # Services métier
+├── templates/         # Templates Twig
+└── tests/            # Tests unitaires et fonctionnels
+```
+
+## API REST
+
+L'API est accessible via le préfixe `/api`. Documentation complète disponible à `/api/doc`.
+
+### Endpoints principaux
+
+- `GET /api/tasks` : Liste des tâches
+- `GET /api/tasks/{id}` : Détails d'une tâche
+- `POST /api/tasks` : Création d'une tâche
+- `PUT /api/tasks/{id}` : Mise à jour d'une tâche
+- `DELETE /api/tasks/{id}` : Suppression d'une tâche
+
+## Tests
+
+Pour exécuter les tests :
+
+```bash
+php bin/phpunit
+```
+
+## Choix techniques
+
+- **Symfony 6+** : Framework PHP moderne avec une excellente documentation
+- **Doctrine ORM** : Pour la gestion de la base de données
+- **API Platform** : Pour la création rapide d'APIs RESTful
+- **Webpack Encore** : Pour la gestion des assets
+- **Bootstrap 5** : Pour l'interface utilisateur responsive
