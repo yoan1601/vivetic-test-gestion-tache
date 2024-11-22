@@ -1,3 +1,5 @@
+<?php
+
 // src/Controller/DashboardController.php
 namespace App\Controller;
 
@@ -31,17 +33,23 @@ class DashboardController extends AbstractController
         $taskCounts = [];
         $overdueTasks = [];
 
+        $pending = $this->taskRepository->countPendingTasks();
+        $inProgress = $this->taskRepository->countInProgressTasks();
+        $completed = $this->taskRepository->countCompletedTasks();
+
         foreach ($users as $user) {
             // Récupérer les tâches en cours, terminées et en retard pour chaque utilisateur
             $inProgressTasks = $this->taskRepository->findByStatusAndUser('in_progress', $user);
             $completedTasks = $this->taskRepository->findByStatusAndUser('completed', $user);
+            $pendingTasks = $this->taskRepository->findByStatusAndUser('pending', $user);
             $overdueTasksForUser = $this->taskRepository->findOverdueTasksForUser($user);
 
             // Ajouter les statistiques dans un tableau
             $taskCounts[$user->getId()] = [
                 'in_progress' => count($inProgressTasks),
                 'completed' => count($completedTasks),
-                'overdue' => count($overdueTasksForUser)
+                'overdue' => count($overdueTasksForUser),
+                'pending' => count($pendingTasks)
             ];
 
             // Ajouter les tâches en retard à la liste globale
@@ -51,7 +59,10 @@ class DashboardController extends AbstractController
         return $this->render('dashboard/index.html.twig', [
             'users' => $users,
             'taskCounts' => $taskCounts,
-            'overdueTasks' => $overdueTasks
+            'overdueTasks' => $overdueTasks,
+            'inProgress' => $inProgress,
+            'pending' => $pending,
+            'completed' => $completed,
         ]);
     }
 }

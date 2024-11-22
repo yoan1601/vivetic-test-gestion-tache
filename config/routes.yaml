@@ -8,3 +8,7 @@ app_dashboard:
     path: /dashboard
     controller:  App\Controller\DashboardController::index
 
+task_create:
+    path: /task_create
+    controller:  App\Controller\TaskController::create
+
