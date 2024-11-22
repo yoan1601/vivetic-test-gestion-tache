@@ -17,11 +17,11 @@
                 </ul>
             </div>
             <div class="col-md-4">
-                <h4>Tâches en retard</h4> 
+                <h4>Tâches en retard</h4>
                 <ul>
                     {% for task in overdueTasks %}
                         <li>
-                            <strong>{{ task.title }}</strong> - Échéance dépassée: {{ task.end_date|date('Y-m-d H:i') }}
+                            <strong>{{ task.title }}</strong> - Échéance dépassée: {{ task.endDate|date('Y-m-d H:i') }}
                         </li>
                     {% else %}
                         <li>Aucune tâche en retard.</li>
@@ -35,9 +35,9 @@
                         <li>
                             <strong>{{ user.fullName }}:</strong>
                             <ul>
-                                <li>Tâches en cours: {{ user.taskStats.in_progress }}</li>
-                                <li>Tâches terminées: {{ user.taskStats.completed }}</li>
-                                <li>Tâches en retard: {{ user.taskStats.overdue }}</li>
+                                <li>Tâches en cours: {{ taskCounts[user.id].in_progress }}</li>
+                                <li>Tâches terminées: {{ taskCounts[user.id].completed }}</li>
+                                <li>Tâches en retard: {{ taskCounts[user.id].overdue }}</li>
                             </ul>
                         </li>
                     {% endfor %}
