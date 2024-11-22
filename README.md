@@ -58,8 +58,6 @@ npm run build
 7. **Démarrer le serveur de développement**
 ```bash
 symfony server:start
-# ou
-php -S localhost:8000 -t public/
 ```
 
 ## Comptes de test
@@ -91,7 +89,7 @@ vivetic-test-gestion-tache/
 
 ## API REST
 
-L'API est accessible via le préfixe `/api`. Documentation complète disponible à `/api/doc`.
+L'API est accessible via le préfixe `/api`.
 
 ### Endpoints principaux
 
@@ -111,5 +109,3 @@ php bin/phpunit
 - **Symfony 6+** : Framework PHP moderne avec une excellente documentation
 - **Doctrine ORM** : Pour la gestion de la base de données
 - **API Platform** : Pour la création rapide d'APIs RESTful
-- **Webpack Encore** : Pour la gestion des assets
-- **Bootstrap 5** : Pour l'interface utilisateur responsive
