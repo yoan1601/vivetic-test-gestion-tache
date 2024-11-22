@@ -103,3 +103,45 @@ class TaskRepository extends ServiceEntityRepository
             ->getResult();
     }
 }
+
+<?php
+
+namespace App\Repository;
+
+use App\Entity\Task;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
+
+class TaskRepository extends ServiceEntityRepository
+{
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Task::class);
+    }
+
+    public function findPaginatedTasks(?string $status, ?int $userId, int $page, int $limit): array
+    {
+        $queryBuilder = $this->createQueryBuilder('t');
+
+        // Appliquer un filtre par statut
+        if ($status) {
+            $queryBuilder->andWhere('t.status = :status')
+                ->setParameter('status', $status);
+        }
+
+        // Appliquer un filtre par utilisateur
+        if ($userId) {
+            $queryBuilder->andWhere('t.assignedTo = :userId')
+                ->setParameter('userId', $userId);
+        }
+
+        // Pagination
+        $queryBuilder->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
+
+        // Ordre par date de création (exemple)
+        $queryBuilder->orderBy('t.createdAt', 'DESC');
+
+        return $queryBuilder->getQuery()->getResult();
+    }
+}
