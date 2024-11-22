@@ -32,6 +32,11 @@ INSERT INTO `user` (`email`, `roles`, `password`, `full_name`) VALUES
 -- Le mot de passe est 'user123' hashé avec BCRYPT
 ('user@example.com', '["ROLE_USER"]', '$2y$13$jYoU7VKoGhfL8qQH8SCxu.9PlEFfaZWqZSd.K/XCjl/9BbH0zrKQC', 'Regular User');
 
+ALTER TABLE task
+    MODIFY status VARCHAR(255) NOT NULL DEFAULT 'pending',
+    MODIFY priority VARCHAR(255) NOT NULL DEFAULT 'medium';
+
+
 -- Insertion de quelques tâches de test
 INSERT INTO `task` (`title`, `description`, `status`, `priority`, `start_date`, `end_date`, `assigned_to_id`) VALUES
 ('Configuration du projet', 'Mettre en place l\'environnement de développement', 'completed', 'high', NOW(), DATE_ADD(NOW(), INTERVAL 2 DAY), 1),
