@@ -58,6 +58,8 @@ npm run build
 ```bash
 symfony server:start
 ```
+# IMPORTANT
+Depuis l'accueil : entrez dans \login pour accèder la page 
 
 ## Comptes de test
 
