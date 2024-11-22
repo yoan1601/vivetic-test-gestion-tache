@@ -1,0 +1,4 @@
+api_task_list:
+    path: /api/tasks
+    controller: App\Controller\Api\TaskApiController::list
+    methods: [GET]
