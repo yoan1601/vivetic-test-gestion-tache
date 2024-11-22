@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <h1>Tableau de bord</h1>
+
+        <!-- Indicateurs de performance -->
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <h4>Total des tâches par statut</h4>
+                <ul>
+                    <li><strong>En attente:</strong> {{ taskCounts.pending }}</li>
+                    <li><strong>En cours:</strong> {{ taskCounts.in_progress }}</li>
+                    <li><strong>Terminées:</strong> {{ taskCounts.completed }}</li>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4>Tâches en retard</h4>
+                <ul>
+                    {% for task in overdueTasks %}
+                        <li>
+                            <strong>{{ task.title }}</strong> - Échéance dépassée: {{ task.end_date|date('Y-m-d H:i') }}
+                        </li>
+                    {% else %}
+                        <li>Aucune tâche en retard.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <h4>Statistiques par utilisateur</h4>
+                <ul>
+                    {% for user in users %}
+                        <li>
+                            <strong>{{ user.full_name }}:</strong>
+                            <ul>
+                                <li>Tâches en cours: {{ user.taskStats.in_progress }}</li>
+                                <li>Tâches terminées: {{ user.taskStats.completed }}</li>
+                                <li>Tâches en retard: {{ user.taskStats.overdue }}</li>
+                            </ul>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <!-- Ajouter des actions ici (par exemple, bouton de création de tâche, etc.) -->
+        <div class="mt-4">
+            <a href="{{ path('task_create') }}" class="btn btn-primary">Créer une tâche</a>
+        </div>
+    </div>
+{% endblock %}
