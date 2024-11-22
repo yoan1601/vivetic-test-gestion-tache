@@ -4,11 +4,10 @@ Une application web développée avec Symfony 6+ permettant aux équipes de gér
 
 ## Fonctionnalités
 
-- 👥 **Système d'authentification** avec deux types d'utilisateurs (admin et membre)
-- ✅ **Gestion complète des tâches** (CRUD)
-- 📊 **Tableau de bord** avec statistiques et indicateurs de performance
-- 🔄 **API REST** pour l'intégration avec d'autres services
-- ✨ **Interface intuitive** et responsive
+- **Système d'authentification** avec deux types d'utilisateurs (admin et membre)
+- **Gestion complète des tâches** (CRUD)
+- **Tableau de bord** avec statistiques et indicateurs de performance
+- **API REST** pour l'intégration avec d'autres services
 
 ## Prérequis
 
