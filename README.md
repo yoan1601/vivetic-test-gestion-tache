@@ -22,8 +22,8 @@ Une application web développée avec Symfony 6+ permettant aux équipes de gér
 
 1. **Cloner le repository**
 ```bash
-git clone https://github.com/votre-username/task-manager.git
-cd task-manager
+git clone https://github.com/yoan1601/vivetic-test-gestion-tache.git
+cd vivetic-test-gestion-tache
 ```
 
 2. **Installer les dépendances**
@@ -75,7 +75,7 @@ php -S localhost:8000 -t public/
 ## Structure du projet
 
 ```
-task-manager/
+vivetic-test-gestion-tache/
 ├── assets/              # Fichiers front-end (JS, CSS)
 ├── config/             # Configuration de l'application
 ├── migrations/         # Migrations de base de données

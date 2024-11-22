@@ -1,4 +1,5 @@
 <?php
+
 // src/Entity/User.php
 namespace App\Entity;
 
@@ -13,19 +14,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    public ?int $id = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    public ?string $email = null;
+    private ?string $email = null;
 
     #[ORM\Column]
-    public array $roles = [];
+    private array $roles = [];
 
     #[ORM\Column]
-    public ?string $password = null;
+    private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    public ?string $fullName = null;
+    private ?string $fullName = null;
+
+    public function getId() {
+        return $this->id;
+    }
+
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    public function getEmail() {
+        return $this->email;
+    }
+
+    public function setEmail($email) {
+        $this->email = $email;
+    }
+
+    public function setRoles($roles) {
+        $this->roles = $roles;
+    }
+
+    public function getFullName() {
+        return $this->fullName;
+    }
+
+    public function setFullName($fullName) {
+        $this->fullName = $fullName;
+    }
     
     public function getRoles(): array
     {
@@ -41,5 +70,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
+    }
+
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword($password): string
+    {
+        return $this->password = (string) $password;
     }
 }
