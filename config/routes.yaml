@@ -13,7 +13,7 @@ app_dashboard:
     controller:  App\Controller\DashboardController::index
 
 task_index:
-    path: /task_create
+    path: /task_index
     controller:  App\Controller\TaskController::index
 
 task_create:
