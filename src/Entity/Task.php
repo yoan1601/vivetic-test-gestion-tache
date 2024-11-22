@@ -1,91 +1,63 @@
 <?php
 
-// src/Entity/Task.php
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
- * @ORM\Table(name="task")
  */
+#[ORM\Entity(repositoryClass: 'App\Repository\TaskRepository')]
 class Task
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     * @ORM\Column(type="integer")
-     */
-    private $id;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private ?int $id = null;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $title;
+    #[ORM\Column(type: 'string', length: 255)]
+    #[Assert\NotBlank]
+    private string $title;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $description;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $description = null;
 
-    /**
-     * @ORM\Column(type="string", length=20, options={"default" : "pending"}")
-     */
-    private $status;
+    #[ORM\Column(type: 'string', length: 255, options: ['default' => 'pending'])]
+    #[Assert\NotBlank]
+    private string $status = 'pending';
 
-    /**
-     * @ORM\Column(type="string", length=20, options={"default" : "medium"}")
-     */
-    private $priority;
+    #[ORM\Column(type: 'string', length: 255, options: ['default' => 'medium'])]
+    #[Assert\NotBlank]
+    private string $priority = 'medium';
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $startDate;
+    #[ORM\Column(type: 'datetime')]
+    #[Assert\NotNull]
+    private \DateTimeInterface $startDate;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
-    private $endDate;
+    #[ORM\Column(type: 'datetime')]
+    #[Assert\NotNull]
+    private \DateTimeInterface $endDate;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="tasks")
-     * @ORM\JoinColumn(name="assigned_to_id", referencedColumnName="id", onDelete="SET NULL")
-     */
-    private $assignedTo;
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\User')]
+    #[ORM\JoinColumn(name: 'assigned_to_id', referencedColumnName: 'id', nullable: true)]
+    private ?User $assignedTo = null;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $comments;
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $comments = null;
 
-    /**
-     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP"})
-     */
-    private $createdAt;
+    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    private \DateTimeInterface $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime", options={"default": "CURRENT_TIMESTAMP", "onUpdate": "CURRENT_TIMESTAMP"})
-     */
-    private $updatedAt;
-
-    public function __construct()
-    {
-        // Initialize properties if needed
-        $this->status = 'pending'; // Default value
-        $this->priority = 'medium'; // Default value
-    }
-
-    // Getters and setters for each property
+    #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP', 'on_update' => 'CURRENT_TIMESTAMP'])]
+    private \DateTimeInterface $updatedAt;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -93,7 +65,6 @@ class Task
     public function setTitle(string $title): self
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -105,11 +76,10 @@ class Task
     public function setDescription(?string $description): self
     {
         $this->description = $description;
-
         return $this;
     }
 
-    public function getStatus(): ?string
+    public function getStatus(): string
     {
         return $this->status;
     }
@@ -117,11 +87,10 @@ class Task
     public function setStatus(string $status): self
     {
         $this->status = $status;
-
         return $this;
     }
 
-    public function getPriority(): ?string
+    public function getPriority(): string
     {
         return $this->priority;
     }
@@ -129,11 +98,10 @@ class Task
     public function setPriority(string $priority): self
     {
         $this->priority = $priority;
-
         return $this;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    public function getStartDate(): \DateTimeInterface
     {
         return $this->startDate;
     }
@@ -141,11 +109,10 @@ class Task
     public function setStartDate(\DateTimeInterface $startDate): self
     {
         $this->startDate = $startDate;
-
         return $this;
     }
 
-    public function getEndDate(): ?\DateTimeInterface
+    public function getEndDate(): \DateTimeInterface
     {
         return $this->endDate;
     }
@@ -153,7 +120,6 @@ class Task
     public function setEndDate(\DateTimeInterface $endDate): self
     {
         $this->endDate = $endDate;
-
         return $this;
     }
 
@@ -165,7 +131,6 @@ class Task
     public function setAssignedTo(?User $assignedTo): self
     {
         $this->assignedTo = $assignedTo;
-
         return $this;
     }
 
@@ -177,11 +142,10 @@ class Task
     public function setComments(?string $comments): self
     {
         $this->comments = $comments;
-
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -189,11 +153,10 @@ class Task
     public function setCreatedAt(\DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
-
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): \DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -201,7 +164,6 @@ class Task
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
-
         return $this;
     }
 }
