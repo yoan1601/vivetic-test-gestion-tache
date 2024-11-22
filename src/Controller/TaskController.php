@@ -64,8 +64,10 @@ class TaskController extends AbstractController
     /**
      * @Route("/tasks/{id}/edit", name="task_edit")
      */
-    public function edit(Request $request, Task $task)
+    public function edit(Request $request, TaskRepository $taskRepository)
     {
+        $id = $request->query->get('id');
+        $task = $taskRepository->find($id);
         $form = $this->createForm(TaskType::class, $task);
         $form->handleRequest($request);
 
