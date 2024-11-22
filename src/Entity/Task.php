@@ -31,11 +31,11 @@ class Task
     #[Assert\NotBlank]
     private string $priority = 'medium';
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(name: 'start_date', type: 'datetime')]
     #[Assert\NotNull]
     private \DateTimeInterface $startDate;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(name: 'end_date', type: 'datetime')]
     #[Assert\NotNull]
     private \DateTimeInterface $endDate;
 
