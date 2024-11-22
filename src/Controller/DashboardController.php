@@ -36,4 +36,36 @@ class DashboardController extends AbstractController
     }
 }
 
+<?php
+
+namespace App\Controller;
+
+use App\Entity\User;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+class DashboardController extends AbstractController
+{
+    private EntityManagerInterface $entityManager;
+
+    // Injection de EntityManagerInterface
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route('/dashboard', name: 'dashboard')]
+    public function index(): Response
+    {
+        // Utilisation de l'EntityManager pour récupérer les utilisateurs
+        $users = $this->entityManager->getRepository(User::class)->findAll();
+
+        return $this->render('dashboard/index.html.twig', [
+            'users' => $users,
+        ]);
+    }
+}
+
 
