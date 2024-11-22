@@ -6,5 +6,5 @@ controllers:
 
 app_dashboard:
     path: /dashboard
-    controller:			   App\Controller\DashboardController::index
+    controller:  App\Controller\DashboardController::index
 
