@@ -1,0 +1,14 @@
+{# templates/task/index.html.twig #}
+<h1>Task List</h1>
+<ul>
+    {% for task in tasks %}
+        <li>
+            {{ task.title }} - {{ task.status }}
+            {% if is_granted('ROLE_ADMIN') %}
+                <a href="{{ path('task_edit', {'id': task.id}) }}">Edit</a>
+                <a href="{{ path('task_delete', {'id': task.id}) }}">Delete</a>
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>
+<a href="{{ path('task_create') }}">Create Task</a>
