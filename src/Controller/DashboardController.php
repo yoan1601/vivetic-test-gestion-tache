@@ -1,48 +1,57 @@
-<?php
-
 // src/Controller/DashboardController.php
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Repository\TaskRepository;
 use App\Repository\UserRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\EntityManagerInterface;
 
 class DashboardController extends AbstractController
 {
+    private $taskRepository;
+    private $userRepository;
 
-    private EntityManagerInterface $entityManager;
-
-    // Injection de EntityManagerInterface
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(TaskRepository $taskRepository, UserRepository $userRepository)
     {
-        $this->entityManager = $entityManager;
+        $this->taskRepository = $taskRepository;
+        $this->userRepository = $userRepository;
     }
 
     /**
      * @Route("/dashboard", name="app_dashboard")
      */
-    public function index(TaskRepository $taskRepository, UserRepository $userRepository): Response
+    public function index(): Response
     {
-        // Exemple de calcul des statistiques des tâches
-        $taskCounts = [
-            'pending' => $taskRepository->countPendingTasks(),
-            'in_progress' => $taskRepository->countInProgressTasks(),
-            'completed' => $taskRepository->countCompletedTasks(),
-        ];
+        // Récupérer tous les utilisateurs
+        $users = $this->userRepository->findAll();
 
-        // Exemple de récupération des tâches en retard
-        $overdueTasks = $taskRepository->findOverdueTasks();
+        // Récupérer les statistiques des tâches par utilisateur
+        $taskCounts = [];
+        $overdueTasks = [];
 
-        // Exemple de récupération des utilisateurs et de leurs statistiques
-        $users = $userRepository->findAll();
+        foreach ($users as $user) {
+            // Récupérer les tâches en cours, terminées et en retard pour chaque utilisateur
+            $inProgressTasks = $this->taskRepository->findByStatusAndUser('in_progress', $user);
+            $completedTasks = $this->taskRepository->findByStatusAndUser('completed', $user);
+            $overdueTasksForUser = $this->taskRepository->findOverdueTasksForUser($user);
+
+            // Ajouter les statistiques dans un tableau
+            $taskCounts[$user->getId()] = [
+                'in_progress' => count($inProgressTasks),
+                'completed' => count($completedTasks),
+                'overdue' => count($overdueTasksForUser)
+            ];
+
+            // Ajouter les tâches en retard à la liste globale
+            $overdueTasks = array_merge($overdueTasks, $overdueTasksForUser);
+        }
 
         return $this->render('dashboard/index.html.twig', [
-            'taskCounts' => $taskCounts,
-            'overdueTasks' => $overdueTasks,
             'users' => $users,
+            'taskCounts' => $taskCounts,
+            'overdueTasks' => $overdueTasks
         ]);
     }
 }
