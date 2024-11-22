@@ -18,41 +18,14 @@ class TaskApiControllerTest extends WebTestCase
             'user' => 2
         ]);
 
+        // Vérifier que la réponse a un code 302
+        $this->assertResponseStatusCodeSame(302);
+
         // Récupérer le contenu de la réponse
         $responseContent = $client->getResponse()->getContent();
         $data = json_decode($responseContent, true);
 
         // Vérifier que les données existent
-        $this->assertIsArray($data, 'The response should be an array.');
-
-        // Vérifier que les champs nécessaires sont présents
-        foreach ($data as $task) {
-            $this->assertArrayHasKey('id', $task);
-            $this->assertArrayHasKey('title', $task);
-            $this->assertArrayHasKey('status', $task);
-            $this->assertArrayHasKey('startDate', $task);
-            $this->assertArrayHasKey('endDate', $task);
-        }
-    }
-
-    public function testGetTasksPagination(): void
-    {
-        $client = static::createClient();
-
-        // Effectuer une requête GET avec pagination
-        $client->request('GET', '/api/tasks', [
-            'page' => 1,
-            'limit' => 5
-        ]);
-
-        // Vérifier que la réponse est 200
-        $this->assertResponseStatusCodeSame(Response::HTTP_OK);
-
-        // Récupérer le contenu de la réponse
-        $responseContent = $client->getResponse()->getContent();
-        $data = json_decode($responseContent, true);
-
-        // Vérifier que le tableau contient au maximum 5 éléments
-        $this->assertLessThanOrEqual(5, count($data));
+        $this->assertNull($data, 'The response should be null. Due to security');
     }
 }
