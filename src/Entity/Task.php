@@ -31,12 +31,12 @@ class Task
     private $description;
 
     /**
-     * @ORM\Column(type="string", columnDefinition="ENUM('pending', 'in_progress', 'completed') DEFAULT 'pending'")
+     * @ORM\Column(type="string", length=20, options={"default" : "pending"}")
      */
     private $status;
 
     /**
-     * @ORM\Column(type="string", columnDefinition="ENUM('low', 'medium', 'high') DEFAULT 'medium'")
+     * @ORM\Column(type="string", length=20, options={"default" : "medium"}")
      */
     private $priority;
 
