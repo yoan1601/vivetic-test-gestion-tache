@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TaskRepository")
@@ -14,42 +15,53 @@ class Task
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
+    #[Groups(['task:read'])]
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
     #[Assert\NotBlank]
+    #[Groups(['task:read'])]
     private string $title;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['task:read'])]
     private ?string $description = null;
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => 'pending'])]
     #[Assert\NotBlank]
+    #[Groups(['task:read'])]
     private string $status = 'pending';
 
     #[ORM\Column(type: 'string', length: 255, options: ['default' => 'medium'])]
     #[Assert\NotBlank]
+    #[Groups(['task:read'])]
     private string $priority = 'medium';
 
     #[ORM\Column(name: 'start_date', type: 'datetime')]
     #[Assert\NotNull]
+    #[Groups(['task:read'])]
     private \DateTimeInterface $startDate;
 
     #[ORM\Column(name: 'end_date', type: 'datetime')]
     #[Assert\NotNull]
+    #[Groups(['task:read'])]
     private \DateTimeInterface $endDate;
 
     #[ORM\ManyToOne(targetEntity: 'App\Entity\User')]
     #[ORM\JoinColumn(name: 'assigned_to_id', referencedColumnName: 'id', nullable: true)]
+    #[Groups(['task:read'])]
     private ?User $assignedTo = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
+    #[Groups(['task:read'])]
     private ?string $comments = null;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP'])]
+    #[Groups(['task:read'])]
     private \DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'datetime', options: ['default' => 'CURRENT_TIMESTAMP', 'on_update' => 'CURRENT_TIMESTAMP'])]
+    #[Groups(['task:read'])]
     private \DateTimeInterface $updatedAt;
 
     public function getId(): ?int

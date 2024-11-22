@@ -22,7 +22,7 @@ class TaskApiController extends AbstractController
         $page = max((int)$request->query->get('page', 1), 1);
         $limit = 10;
 
-        $tasks = $taskRepository->findTasksWithFilters($status, $userId, $page, $limit);
+        $tasks = $taskRepository->findPaginatedTasks($status, $userId, $page, $limit);
 
         // Utiliser le serializer pour convertir les données en JSON
         $data = $serializer->serialize($tasks, 'json', ['groups' => 'task:read']);
