@@ -10,9 +10,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TaskController extends AbstractController
 {
+
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     /**
      * @Route("/tasks", name="task_index")
      */
@@ -20,7 +28,7 @@ class TaskController extends AbstractController
     {
         $tasks = $this->getUser()->getRoles() === ['ROLE_ADMIN']
             ? $taskRepository->findAll() // Admin can see all tasks
-            : $taskRepository->findByUser($this->getUser()->getId()); // User sees only their tasks
+            : $taskRepository->findByUser($this->getUser()); // User sees only their tasks
 
         return $this->render('task/index.html.twig', [
             'tasks' => $tasks,
@@ -40,9 +48,8 @@ class TaskController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $task = $form->getData();
             $task->setAssignedTo($this->getUser());
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($task);
-            $entityManager->flush();
+            $this->entityManager->persist($task);
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Task created successfully!');
 
@@ -63,7 +70,7 @@ class TaskController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            $this->entityManager->flush();
             $this->addFlash('success', 'Task updated successfully!');
             return $this->redirectToRoute('task_index');
         }
@@ -78,9 +85,8 @@ class TaskController extends AbstractController
      */
     public function delete(Task $task)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $entityManager->remove($task);
-        $entityManager->flush();
+        $this->entityManager->remove($task);
+        $this->entityManager->flush();
 
         $this->addFlash('success', 'Task deleted successfully!');
         return $this->redirectToRoute('task_index');

@@ -4,11 +4,27 @@ controllers:
         namespace: App\Controller
     type: attribute
 
+home:
+    path: /
+    controller:  App\Controller\SecurityController::login
+
 app_dashboard:
     path: /dashboard
     controller:  App\Controller\DashboardController::index
 
+task_index:
+    path: /task_create
+    controller:  App\Controller\TaskController::index
+
 task_create:
     path: /task_create
     controller:  App\Controller\TaskController::create
+
+task_edit:
+    path: /task_edit
+    controller:  App\Controller\TaskController::edit
+
+task_delete:
+    path: /task_delete
+    controller:  App\Controller\TaskController::delete
 

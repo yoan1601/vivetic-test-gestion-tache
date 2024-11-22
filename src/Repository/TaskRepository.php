@@ -26,11 +26,11 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     // Exemple de méthode pour récupérer les tâches d'un utilisateur
-    public function findByUser($userId)
+    public function findByUser($user)
     {
         return $this->createQueryBuilder('t')
-            ->where('t.assigned_to_id = :userId')
-            ->setParameter('userId', $userId)
+            ->where('t.assignedTo = :user')
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult();
     }
