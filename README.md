@@ -89,6 +89,23 @@ vivetic-test-gestion-tache/
 └── tests/            # Tests unitaires et fonctionnels
 ```
 
+## API REST
+
+L'API est accessible via le préfixe `/api`. Documentation complète disponible à `/api/doc`.
+
+### Endpoints principaux
+
+- `GET /api/tasks` : Liste des tâches
+exemple : 'http://localhost:8000/api/tasks?status=pending&user=2&page=1&limit=5'
+
+## Tests
+
+Pour exécuter les tests :
+
+```bash
+php bin/phpunit
+```
+
 ## Choix techniques
 
 - **Symfony 6+** : Framework PHP moderne avec une excellente documentation
