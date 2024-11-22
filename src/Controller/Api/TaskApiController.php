@@ -3,41 +3,31 @@
 namespace App\Controller\Api;
 
 use App\Repository\TaskRepository;
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TaskApiController extends AbstractController
 {
-    private TaskRepository $taskRepository;
-
-    public function __construct(TaskRepository $taskRepository)
-    {
-        $this->taskRepository = $taskRepository;
-    }
-
     /**
      * @Route("/api/tasks", name="api_task_list", methods={"GET"})
      */
-    public function list(Request $request): JsonResponse
+    public function list(Request $request, TaskRepository $taskRepository, SerializerInterface $serializer): JsonResponse
     {
-        // Récupérer les paramètres de requête
-        $status = $request->query->get('status'); // Filtrer par statut
-        $userId = $request->query->get('user');  // Filtrer par utilisateur
-        $page = (int) $request->query->get('page', 1); // Pagination (page par défaut : 1)
-        $limit = (int) $request->query->get('limit', 10); // Nombre de tâches par page
+        // Pagination & Filtres
+        $status = $request->query->get('status');
+        $userId = $request->query->get('user');
+        $page = max((int)$request->query->get('page', 1), 1);
+        $limit = 10;
 
-        // Appel du repository pour obtenir les tâches paginées et filtrées
-        $tasks = $this->taskRepository->findPaginatedTasks($status, $userId, $page, $limit);
+        $tasks = $taskRepository->findTasksWithFilters($status, $userId, $page, $limit);
 
-        // Retourner la réponse en JSON
-        return new JsonResponse([
-            'page' => $page,
-            'limit' => $limit,
-            'total' => count($tasks),
-            'data' => $tasks
-        ]);
+        // Utiliser le serializer pour convertir les données en JSON
+        $data = $serializer->serialize($tasks, 'json', ['groups' => 'task:read']);
+
+        return new JsonResponse($data, 200, [], true);
     }
 }
+ 
